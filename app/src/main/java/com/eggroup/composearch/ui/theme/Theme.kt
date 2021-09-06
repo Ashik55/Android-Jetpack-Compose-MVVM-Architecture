@@ -27,6 +27,7 @@ private val LightColorPalette = lightColors(
     */
 )
 
+
 @Composable
 fun ComposeArchTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
