@@ -1,6 +1,8 @@
 package com.eggroup.composearch.ui.screens.list_screen
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -9,6 +11,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.unit.dp
@@ -24,35 +27,40 @@ fun ListScreen(
     navController: NavController,
     viewModel: ListScreenViewModel = hiltViewModel()
 ) {
-    when (val result = viewModel.response.value) {
-        is ApiState.Success -> {
-
-            Scaffold(
-                topBar = {
-                    TopAppBar(
-                        title = { Text("Top news") },
-                    )
-                }
-            ) {
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { Text("Top news") },
+            )
+        }
+    ) {
+        when (val result = viewModel.response.value) {
+            is ApiState.Success -> {
                 LazyColumn {
                     items(result.data) { response ->
                         EachRow(navController, response)
                     }
                 }
             }
+            is ApiState.Failure -> {
+                Text(text = "${result.msg}")
+            }
+            ApiState.Loading -> {
+                Box(
+                    contentAlignment = Alignment.Center,
+                    modifier = Modifier.fillMaxSize() ){
+                    CircularProgressIndicator()
+                }
 
+            }
+            ApiState.Empty -> {
 
+            }
         }
-        is ApiState.Failure -> {
-            Text(text = "${result.msg}")
-        }
-        ApiState.Loading -> {
-            CircularProgressIndicator()
-        }
-        ApiState.Empty -> {
 
-        }
     }
+
+
 
 }
 
