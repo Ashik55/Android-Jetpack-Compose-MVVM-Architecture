@@ -18,7 +18,8 @@ class ListScreenViewModel @Inject constructor(
     private val repository: Repository
 ) : ViewModel() {
 
-    val response: MutableState<ApiState> = mutableStateOf(ApiState.Empty)
+    val response: MutableState<ApiState> = mutableStateOf(ApiState.Loading)
+
     init {
         getPost()
     }
